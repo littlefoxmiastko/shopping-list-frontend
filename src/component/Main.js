@@ -10,7 +10,7 @@ const items = [
     { id:3, name: "Woda", done:false, quantity:3, unit:'kg'  },
     { id:4, name: "taka woda w puszcze co lubie niebieska z napisami", done:false, quantity:3, unit:'kg'  },
     { id:5, name: "taka woda w puszcze co lubie niebieska z napisami", done:false, quantity:3, unit:'kg'  },
-    { id:6, name: "taka woda w puszcze co lubie niebieska z napisami", done:false, quantity:3, unit:'kg'  }
+    { id:6, name: "taka woda w puszcze co ludbie niebieska z napisami", done:false, quantity:3, unit:'kg'  }
    ];
  
    

@@ -9,15 +9,31 @@ export default class ResultTable extends React.Component{
         super(props);
 
         this.state = {
-            items: props.items
+            items: []
         };
     }
 
-    componentDidMount() {
+    fetchData(callback) {
         fetch('/api/items')
-           .then(res => res.json())
-           .then(result => this.setState({ items: result }))
+        .then(res => res.json())
+        .then(result => callback(result));
     }
+
+    componentDidMount() {
+        // fetch('/api/items')
+        //    .then(res => res.json())
+        //    .then(result => this.setState({ items: result }));
+        this.fetchData( (result) => { this.setState({items: result}); } );
+    }
+
+    remove(item) {
+        fetch('/api/items/'+item.id, {
+            method: 'DELETE'
+        })
+            .then(response => this.fetchData( (result) => { this.setState({items: result}); } ));
+    }
+
+    componentWillUpdate
 
     render() {
         return (
@@ -50,7 +66,7 @@ export default class ResultTable extends React.Component{
                                     {item.quantity} {item.unit}
                                 </TableCell>
                                 <TableCell>
-                                    <RemoveCircleOutlineSharp />
+                                    <RemoveCircleOutlineSharp onClick={()=>this.remove(item)} />
                                 </TableCell>
                             </TableRow>
                         ))}

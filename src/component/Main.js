@@ -4,14 +4,7 @@ import { Dehaze } from '@material-ui/icons';
 import InputPanel from './InputPanel';
 import ResultTable from './ResultTable';
 
-const items = [
-    { id:1, name: "Pomidory", done:false, quantity:2, unit:'pieces' },
-    { id:2, name: "Piwo", done:true, quantity:1, unit:'pieces'  },
-    { id:3, name: "Woda", done:false, quantity:3, unit:'kg'  },
-    { id:4, name: "taka woda w puszcze co lubie niebieska z napisami", done:false, quantity:3, unit:'kg'  },
-    { id:5, name: "taka woda w puszcze co lubie niebieska z napisami", done:false, quantity:3, unit:'kg'  },
-    { id:6, name: "taka woda w puszcze co ludbie niebieska z napisami", done:false, quantity:3, unit:'kg'  }
-   ];
+const items = [ ];
  
    
 export default class Main extends React.Component{

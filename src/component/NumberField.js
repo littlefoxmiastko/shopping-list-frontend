@@ -8,6 +8,7 @@ export default class NumberField extends React.Component{
         this.state = {
             value: props.value,
             label: props.label,
+            name: props.name
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -25,6 +26,7 @@ export default class NumberField extends React.Component{
             <TextField
                 label={this.state.label} 
                 value={this.state.value}
+                name={this.state.name}
                 onChange={this.handleChange}
             />
         );

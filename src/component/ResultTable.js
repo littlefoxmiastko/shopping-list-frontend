@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox} from '@material-ui/core';
 import { RemoveCircleOutlineSharp } from '@material-ui/icons';
 
@@ -13,6 +13,7 @@ export default class ResultTable extends React.Component{
         };
     }
 
+
     fetchData(callback) {
         fetch('/api/items')
         .then(res => res.json())
@@ -20,9 +21,6 @@ export default class ResultTable extends React.Component{
     }
 
     componentDidMount() {
-        // fetch('/api/items')
-        //    .then(res => res.json())
-        //    .then(result => this.setState({ items: result }));
         this.fetchData( (result) => { this.setState({items: result}); } );
     }
 
@@ -31,6 +29,22 @@ export default class ResultTable extends React.Component{
             method: 'DELETE'
         })
             .then(response => this.fetchData( (result) => { this.setState({items: result}); } ));
+    }
+
+    doneHandler(item) {
+        fetch('/api/items/'+item.id+'/done', {
+            method: 'PATCH'
+        })
+            .then( () => { 
+                let itemId = item.id;
+                let items = this.state.items;
+                let itemIndex = items.findIndex(function(item,index) {
+                    return item.id === itemId;
+                });
+              
+                items[itemIndex].done = !item.done; 
+                this.setState({items: items});  
+            });
     }
 
     componentWillUpdate
@@ -57,7 +71,7 @@ export default class ResultTable extends React.Component{
                         {this.state.items.map( (item) => (
                             <TableRow key={item.id}>
                                 <TableCell>
-                                    <Checkbox></Checkbox>
+                                    <Checkbox onClick={() => this.doneHandler(item)} checked={item.done}></Checkbox>
                                 </TableCell>
                                 <TableCell>
                                     {item.name}

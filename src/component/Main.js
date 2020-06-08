@@ -4,7 +4,6 @@ import { Dehaze } from '@material-ui/icons';
 import InputPanel from './InputPanel';
 import ResultTable from './ResultTable';
 
-const items = [ ];
  
    
 export default class Main extends React.Component{
@@ -30,7 +29,7 @@ export default class Main extends React.Component{
               </Paper>
               <Paper>
                 <Box p={0} m={0}>
-                  <ResultTable items={items} />          
+                  <ResultTable />          
                 </Box>
               </Paper>
           </Container>

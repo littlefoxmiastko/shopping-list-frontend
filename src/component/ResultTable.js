@@ -1,92 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox} from '@material-ui/core';
 import { RemoveCircleOutlineSharp } from '@material-ui/icons';
 
 
-export default class ResultTable extends React.Component{
+export default function ResultTable(props) {
 
-    constructor(props) {
-        super(props);
+    const [items, setItems] = useState([]);
 
-        this.state = {
-            items: []
-        };
-    }
-
-
-    fetchData(callback) {
+    const fetchData = (callback) => {
         fetch('/api/items')
         .then(res => res.json())
-        .then(result => callback(result));
+        .then(result => { callback(result); });
     }
 
-    componentDidMount() {
-        this.fetchData( (result) => { this.setState({items: result}); } );
-    }
-
-    remove(item) {
+    const remove = (item) => {
         fetch('/api/items/'+item.id, {
             method: 'DELETE'
-        })
-            .then(response => this.fetchData( (result) => { this.setState({items: result}); } ));
+        }).then(() => {
+            setItems(items.filter( (element) => element.id!==item.id));
+        });
     }
 
-    doneHandler(item) {
+    const doneHandler = (item) => {
         fetch('/api/items/'+item.id+'/done', {
             method: 'PATCH'
-        })
-            .then( () => { 
-                let itemId = item.id;
-                let items = this.state.items;
-                let itemIndex = items.findIndex(function(item,index) {
-                    return item.id === itemId;
-                });
-              
-                items[itemIndex].done = !item.done; 
-                this.setState({items: items});  
-            });
+        }).then( () => { 
+                item.done=!item.done;
+                setItems(items.map( (element) => element.id===item.id ? item : element));
+        });
     }
 
-    componentWillUpdate
+    useEffect(() => {
+        fetchData(setItems);
+      }, []);
 
-    render() {
-        return (
-            <TableContainer>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell padding="checkbox" />
+      return (
+        <TableContainer>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell padding="checkbox" />
+                        <TableCell>
+                            Name
+                        </TableCell>
+                        <TableCell width={1}>
+                            Quantity
+                        </TableCell>
+                        <TableCell padding="checkbox">
+                            
+                        </TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {items?items.map( (item) => (
+                        <TableRow key={item.id}>
                             <TableCell>
-                                Name
+                                <Checkbox onClick={() => doneHandler(item)} checked={item.done}></Checkbox>
                             </TableCell>
-                            <TableCell width={1}>
-                                Quantity
+                            <TableCell>
+                                {item.name}
                             </TableCell>
-                            <TableCell padding="checkbox">
-                                
+                            <TableCell>
+                                {item.quantity} {item.unit}
+                            </TableCell>
+                            <TableCell>
+                                <RemoveCircleOutlineSharp onClick={()=>remove(item)} />
                             </TableCell>
                         </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {this.state.items.map( (item) => (
-                            <TableRow key={item.id}>
-                                <TableCell>
-                                    <Checkbox onClick={() => this.doneHandler(item)} checked={item.done}></Checkbox>
-                                </TableCell>
-                                <TableCell>
-                                    {item.name}
-                                </TableCell>
-                                <TableCell>
-                                    {item.quantity} {item.unit}
-                                </TableCell>
-                                <TableCell>
-                                    <RemoveCircleOutlineSharp onClick={()=>this.remove(item)} />
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        );
-    }
+                    )):''}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
+    
 }

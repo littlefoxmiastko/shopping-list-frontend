@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Grid, Button, FormControl, Select, MenuItem, InputLabel, TextField } from '@material-ui/core';
 import { Add, ClearAll } from '@material-ui/icons';
 import NumberField from './NumberField';
 
 export default class InputPanel extends React.Component{
-
-    const [newItem, setNewItem] = useState({});
 
     constructor(props) {
         super(props);
@@ -24,7 +22,6 @@ export default class InputPanel extends React.Component{
 
     handleSubmit(event) {
         event.preventDefault();
-        this.setNewItem(this.state.formControls);
         fetch('/api/items', {
             method: 'POST',
             headers: {

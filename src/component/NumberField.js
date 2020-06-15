@@ -24,9 +24,9 @@ export default class NumberField extends React.Component{
     render() {
         return (
             <TextField
-                label={this.state.label} 
-                value={this.state.value}
-                name={this.state.name}
+                label={this.props.label} 
+                value={this.props.value}
+                name={this.props.name}
                 onChange={this.handleChange}
             />
         );
